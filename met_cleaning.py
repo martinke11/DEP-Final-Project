@@ -35,6 +35,9 @@ df['AccessionYear'] = df['AccessionYear'].fillna(0).astype(int)
 df.rename(columns={'Artist Gender': 'Is Female'}, inplace=True)
 df['Is Female'] = df['Is Female'].apply(lambda x: 1 if x else 0)
 
+# Artist Role
+df['Artist Role'] = df['Artist Role'].str.split('|').str[0]
+
 columns_to_convert = ['Is Highlight', 'Is Timeline Work', 'Is Public Domain']
 
 for col in columns_to_convert:
