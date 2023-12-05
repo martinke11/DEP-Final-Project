@@ -43,7 +43,7 @@ df['AccessionYear'] = pd.to_datetime(df['AccessionYear'], errors='coerce').dt.ye
 df['AccessionYear'] = df['AccessionYear'].fillna(0).astype(int)
 
 df.rename(columns={'Artist Gender': 'Is Female'}, inplace=True)
-df['Is Female'] = df['Is Female'].apply(lambda x: 1 if x else 0)
+df['Is Female'] = df['Is Female'].apply(lambda x: 1 if pd.isnull(x) else 0)
 
 # Artist Role
 df['Artist Role'] = df['Artist Role'].str.split('|').str[0]
