@@ -12,8 +12,9 @@ os.chdir('/Users/katherinemartin/Desktop/Autumn 2023/Data Engineering /Final Pro
 
 df = pd.read_csv('MetObjects.csv')
 
-
-columns_to_drop = ['Object Number', 'Gallery Number', 'Portfolio', 'Artist Prefix', 'Artist Display Bio',
+# deleted 'Constinuent ID' because it wasnt unique and created a unique key in
+# sql instead
+columns_to_drop = ['Constinuent ID', 'Object Number', 'Gallery Number', 'Portfolio', 'Artist Prefix', 'Artist Display Bio',
                    'Artist Suffix', 'Artist Alpha Sort', 'Artist ULAN URL', 'Artist Wikidata URL', 'Object Date',
                    'Classification', 'Rights and Reproduction', 'Link Resource', 'Object Wikidata URL',
                    'Metadata Date', 'Repository', 'Tags', 'Tags AAT URL', 'Tags Wikidata URL']
@@ -26,6 +27,15 @@ df.dropna(subset=['Object Name'], inplace=True)
 df.dropna(subset=['Medium'], inplace=True)
 df.dropna(subset=['Credit Line'], inplace=True)
 df.dropna(subset=['Dimensions'], inplace=True)
+
+
+#For getting th data into sql i removed a bunch of rows with
+# the code below, you can try it without doing this first I am still not sure 
+# if the problem is because of my computer or not
+df = df.dropna(subset=['Artist Display Name'])
+df = df.dropna(subset=['Culture'])
+df = df[df['Culture'] != 'unknown']
+#############################################################################
 
 df.isna().sum()
 
@@ -85,7 +95,6 @@ def find_country(row):
 
 df['Country'] = df['Country'].apply(find_country)
 
-df['Constituent ID'] = pd.to_numeric(df['Constituent ID'], errors='coerce').fillna(0).astype(int)
 
 # Checking all the string columns for absurd values
 for col in df.select_dtypes(include='object').columns:
@@ -109,7 +118,6 @@ def to_snake_case(name):
 df.columns = [to_snake_case(col) for col in df.columns]
 
 df.columns = df.columns.str.replace(' ', '')
-df = df.rename(columns={'constituent_i_d': 'constituent_id'})
 df = df.rename(columns={'object_i_d': 'object_id'})
 
 # Function to remove special characters
