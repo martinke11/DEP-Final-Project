@@ -108,6 +108,18 @@ df.columns = [to_snake_case(col) for col in df.columns]
 df.columns = df.columns.str.replace(' ', '')
 df = df.rename(columns={'constituent_i_d': 'constituent_id'})
 df = df.rename(columns={'object_i_d': 'object_id'})
+
+# Function to remove special characters
+def remove_special_characters(text, keep_whitespace=True):
+    if keep_whitespace:
+        return ''.join(e for e in text if e.isalnum() or e.isspace())
+    else:
+        return ''.join(e for e in text if e.isalnum())
+
+# Applying the function to the DataFrame columns
+df['object_name'] = df['object_name'].apply(remove_special_characters)
+df['title'] = df['title'].apply(remove_special_characters)
+
 df.head()
 df.dtypes
 df.to_csv('cleaned_data.csv')
