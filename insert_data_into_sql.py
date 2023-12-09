@@ -1,35 +1,27 @@
 from sqlalchemy import create_engine
 from sqlalchemy import text
 import pandas as pd 
+import os
+os.chdir('/Users/katherinemartin/Desktop/Autumn 2023/Data Engineering /Final Project')
 
 
-def create_connection(username, password, host, dbname):
-    engine_name = f"mysql://{username}:{password}@{host}/{dbname}"
+#Code to import csv to met database
+# MySQL connection string
+# Replace 'your_username', 'your_password', 'your_host', 'your_database' with your MySQL credentials
+connection_string = "mysql+pymysql://root:rootroot@127.0.0.1:3306/met"
 
-    engine = create_engine(engine_name)
-    try:
-        connection = engine.connect() 
-    except:
-        raise ValueError("Connection Failed")
-    
-    return connection 
+#Change CSV file path according to working directory
+csv_file = 'cleaned_data_with_ids.csv'
 
-if __name__ == "__main__":
+# Table name in MySQL
+table_name = 'cleaned_data_with_ids'
 
-    # Setting the parameters
-    params = {
-        'username' : 'root',
-        'password' : 'rootroot',
-        'host'     : '127.0.0.1:3306',
-        'dbname'   : 'met'
-    }
+# Read CSV file into a pandas DataFrame
+df_2 = pd.read_csv(csv_file)
 
-    # create the connection 
-    conn = create_connection(params["username"], params["password"], params["host"], params["dbname"])
+# Create a MySQL connection and upload the DataFrame to the table
+engine = create_engine(connection_string)
+df_2.to_sql(table_name, con=engine, if_exists='replace', index=False)
 
-    # reading csv file 
-    df = pd.read_csv("cleaned_data.csv")
-    print(df.head())
-    df.to_sql(name="cleaned_met_data", con=conn, index=False)
-
-    
+# Close the MySQL connection
+engine.dispose()
