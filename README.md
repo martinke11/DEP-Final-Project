@@ -1,7 +1,5 @@
 # DEP-Final-Project
 
-In this project we designed and implemented a comprehensive data schema using relational database management system (RDBMS) MySQL to streamline the organization of The Metropolitan Museum of Art’s extensive artwork database (500,000+ objects), enhancing data accessibility and integrity for varied analytical applications.
-
 [Project Presentation](https://github.com/martinke11/DEP-Final-Project/blob/main/met_ppt.pdf)
 
 Link to MetObject.csv (too big to commit to github): https://drive.google.com/file/d/1S7oVC6e0PW1r2-0uraRzGeE9vtlwODxO/view?usp=sharing
